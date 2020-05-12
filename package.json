@@ -1,0 +1,18 @@
+{
+  "name": "@fuse-open/types",
+  "version": "1.14.0",
+  "description": "TypeScript Definitions for FuseJS modules.",
+  "files": [
+    "index.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fuse-open/types.git"
+  },
+  "author": "Fuse Open",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fuse-open/types/issues"
+  },
+  "homepage": "https://github.com/fuse-open/types#readme"
+}
