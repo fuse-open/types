@@ -1,6 +1,6 @@
 {
   "name": "@fuse-open/types",
-  "version": "1.14.0",
+  "version": "2.0.0-beta.3",
   "description": "TypeScript definitions for FuseJS modules.",
   "devDependencies": {
     "typescript": "^4.1.3"
