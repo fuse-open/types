@@ -43,7 +43,7 @@ declare module "FuseJS/Base64" {
      * Decodes the given base64 value to an UTF8 string representation
      *
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo Â¸ bar
+     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo ¸ bar
      */
     function decodeUtf8(value: string): string;
 
@@ -81,7 +81,7 @@ declare module "FuseJS/Base64" {
      * Encodes the given UTF8 value to a base64 string representation
      *
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Foo Â¸ bar")); //LOG: Rm9vIMKpIGJhcg==
+     *     console.log(Base64.encodeUtf8("Foo ¸ bar")); //LOG: Rm9vIMKpIGJhcg==
      */
     function encodeUtf8(value: string): string;
 }
@@ -1160,6 +1160,11 @@ declare module "FuseJS/GeoLocation" {
     function on(event: Event, callback: (arg: any) => void): void;
 
     /**
+     * Returns the authorization status of GeoLocation
+     */
+    function GetAuthorizationStatus(): any;
+
+    /**
      * Gets the current location as a promise.
      *
      * Can optionally be passed a timeout (in milliseconds)
@@ -1178,6 +1183,11 @@ declare module "FuseJS/GeoLocation" {
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
     function getLocation(timeout: number): Location;
+
+    /**
+     * Returns whether or not the device has Geolocation enabled.
+     */
+    function isLocationEnabled(): boolean;
 
     /**
      * Starts the GeoLocation listening service.
@@ -1628,6 +1638,215 @@ declare module "FuseJS/LocalNotifications" {
  * - Google limits to 4096 bytes
  * - Apple limits to 2048 bytes on iOS 8 and up but only 256 bytes on all earlier versions
  *
+ * ## Additional Android Push Notification Features
+ *
+ * Since Android 8+ (Oreo or API 26), it is mandatory to define and assign a channel to every notification.
+ *
+ * We have defined a default channel (named "App") to be assigned to notifications if they aren't already assigned a channel, so you don't need to define one but if you do want to customise it, read on.
+ *
+ * NB! Once a channel is created, you CANNOT change its properties later.
+ *
+ * Apart from the Notification Channel feature discussed above, here is a list of the other android features implemented thus far:
+ *
+ * - Notification Sound
+ * - Notification Color
+ * - Notification Priority
+ * - Notification Category
+ * - Notification Lockscreen Visibility
+ *
+ * Android 8+
+ * - Notification Channel
+ * - Nofitication Channel Group
+ * - Notification Channel Importance
+ * - Notification Channel Lockscreen Visibility
+ * - Notification Channel Light Color
+ * - Notification Channel Sound
+ * - Notification Channel Vibration
+ * - Notification Channel Show Badge
+ * - Notification Badge Number
+ * - Notification Badge Icon Type
+ *
+ * We'll show you how to implement them here in fuse but read more about each feature [here](https://developer.android.com/guide/topics/ui/notifiers/notifications).
+ *
+ * #### Notification Sound - Value - default
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'sound': 'default'
+ *         }
+ *     },
+ *
+ * #### Notification Color - Values - #RRGGBB | #AARRGGBB
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'color': '#8811FF'
+ *         }
+ *     },
+ *
+ * #### Notification Priority - Values - high | low | max | min
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationPriority': 'high'
+ *         }
+ *     },
+ *
+ * #### Notification Category - Values - alarm | reminder | event | call | message | email | promo | recommendation | social | error | progress | service | status | system | transport
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationCategory': 'social'
+ *         }
+ *     },
+ *
+ * #### Notification Lockscreen Visibility - Values - public | secret | private
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationLockscreenVisibility': 'secret'
+ *         }
+ *     },
+ *
+ * #### Notification Channel
+ *
+ * Notification Channel and a Notification Channel Group:
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelGroupId': 'sports',
+ *             'notificationChannelGroupName': 'Sports',
+ *             'notificationChannelId': 'sports_football_highlights',
+ *             'notificationChannelName': 'Football Highlights',
+ *             'notificationChannelDescription': 'Video commentary once a week'
+ *         }
+ *     },
+ *
+ * Notification Channel Importance - Values - urgent | high | medium | low | none
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelGroupId': 'sports',
+ *             'notificationChannelGroupName': 'Sports',
+ *             'notificationChannelId': 'sports_basketball_highlights',
+ *             'notificationChannelName': 'Basketball Highlights',
+ *             'notificationChannelDescription': 'Video commentary once a week',
+ *             'notificationChannelImportance': 'urgent',
+ *
+ *         }
+ *     },
+ *
+ * Notification Channel Lockscreen Visibility - Values - public | secret | private
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelLockscreenVisibility': 'private'
+ *         }
+ *     },
+ *
+ * Notification Channel Light Color - Values - #RRGGBB
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelLightColor': '#1188FF'
+ *         }
+ *     },
+ *
+ * Notification Channel Sound - Values - true | false
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelIsSoundOn': 'true'
+ *         }
+ *     },
+ *
+ * Notification Channel Vibration - Values - true | false
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelIsVibrationOn': 'true'
+ *         }
+ *     },
+ *
+ * Notification Channel Show Badge - Values - true | false
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationChannelIsShowBadgeOn': 'true'
+ *         }
+ *     },
+ *
+ * #### Notification Badge
+ *
+ * Notification Channel Badge Number
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationBadgeNumber': '23'
+ *         }
+ *     },
+ *
+ * Notification Channel Badge Icon Type - Values - none | small | large
+ *
+ *     'notification': {
+ *         alert: {
+ *             'title': 'Well would ya look at that!',
+ *             'body': 'Hello from the server',
+ *             'notificationBadgeIconType': 'small'
+ *         }
+ *     },
+ *
+ * #### Notification Uno Project Configurations
+ *
+ * The following notification settings can be set via the `.unoproj` settings:
+ *
+ *     "Android": {
+ *         ...
+ *         "Notification": {
+ *             "DefaultChannelGroupId": "default_group",
+ *             "DefaultChannelGroupName": "Categories",
+ *             "DefaultChannelId": "default_channel",
+ *             "DefaultChannelName": "App",
+ *             "DefaultChannelDescription": "",
+ *             "DefaultChannelImportance": "high",
+ *             "DefaultChannelLightColor": "#FF2C37",
+ *             "NotificationChannelLockscreenVisibility": "secret",
+ *             "NotificationChannelIsSoundOn": true,
+ *             "NotificationChannelIsShowBadgeOn": true,
+ *             "NotificationChannelIsVibrationOn": true
+ *         }
+ *         ...
+ *     },
+ *
+ * Note: notification payload settings will always override the notification settings from `.unoproj`.
+ * NB! Once a channel is created, you CANNOT change its properties later.
+ *
  * ## Remarks
  *
  * This module is an @EventEmitter, so the methods from @EventEmitter can be used to listen to events.
@@ -1665,8 +1884,16 @@ declare module "FuseJS/LocalNotifications" {
  *             "Package": "com.mycompany.myapp",
  *         }
  *
- * - After adding the Android app, you will be prompted to download a `google-services.json` file.
- *     This can be ignored, as it's not needed for push notifications and can always be downloaded later if needed.
+ * - After adding the Android app, you will be prompted to download a `google-services.json` file. Download and copy it to the root of your project.
+ * - Add the following file to tell fuse to copy google-services.json to your android app folder:
+ *
+ * Android.uxl
+ *
+ * ```
+ * <Extensions Backend="CPlusPlus" Condition="Android">
+ *     <CopyFile Condition="Android" Name="google-services.json" TargetName="app/google-services.json" />
+ * </Extensions>
+ * ```
  *
  * ### Sending notifications
  *
@@ -2162,6 +2389,94 @@ declare module "FuseJS/Storage" {
 }
 
 /**
+ * `FuseJS/UserSettings` module provides key-value pairs mechanism to store and retrieve primitive data types (string, number, boolean) as well as an array and json object.
+ * You can use this module to store information such as configuration data, application states etc.
+ *
+ * > `UserSettings` module is implemented atop NSUserDefaults on iOS and Shared Preferences on Android
+ *
+ * ## Example
+ *
+ *     <JavaScript>
+ *         var userSettings = require("FuseJS/UserSettings")
+ *
+ *         userSettings.putString('email', 'john.appleseed@example.com');
+ *         userSettings.putString('password', 's3c1ReT');
+ *         userSettings.putString('api_token', '73awnljqurelcvxiy832a');
+ *         userSettings.putBoolean('logged', true);
+ *         userSettings.putNumber('state_num', 2);
+ *         userSettings.putArray('preferences', ['Technology', 'Cars', 'Foods']);
+ *         userSettings.putObject('profile', {
+ *             'first_name': 'John',
+ *             'last_name': 'Appleseed',
+ *             'gender': 'male',
+ *             'address': '5 avenue'
+ *             'age': 25,
+ *             'married': false
+ *         });
+ *
+ *         var username = userSettings.getString('username');
+ *         var password = userSettings.getString('password');
+ *         var api_token = userSettings.getString('api_token');
+ *         var logged = userSettings.getBoolean('logged');
+ *         var state_num = userSettings.getNumber('state_num');
+ *         var preferences = userSettings.getArray('preferences');
+ *         var profile = userSettings.getObject('profile');
+ *     </JavaScript>
+ */
+declare module "FuseJS/UserSettings" {
+    /**
+     * clear User Setting values
+     */
+    function clear(): void;
+
+    /**
+     * Retrieve a Boolean value from the UserSetting.
+     */
+    function getBoolean(key: string): boolean;
+
+    /**
+     * Retrieve a Number value from the UserSetting.
+     */
+    function getNumber(key: string): number;
+
+    /**
+     * Retrieve a Json Object value from the UserSetting.
+     */
+    function getObject(key: string): any;
+
+    /**
+     * Retrieve a String value from the UserSetting.
+     */
+    function getString(key: string): string;
+
+    /**
+     * Set a Boolean value in the UserSetting.
+     */
+    function putBoolean(key: string, value: boolean): void;
+
+    /**
+     * Set a Number value in the UserSetting.
+     */
+    function putNumber(key: string, value: number): void;
+
+    /**
+     * Set a JSON value in the UserSetting.
+     */
+    function putObject(key: string, value: any): void;
+
+    /**
+     * Set a String value in the UserSetting.
+     */
+    function putString(key: string, value: string): void;
+
+    /**
+     * remove value based on key.
+     */
+    function remove(key: string): void;
+
+}
+
+/**
  * Allows you to use the device's vibration functionality.
  *
  * You need to add a reference to `"Fuse.Vibration"` in your project file to use this feature.
@@ -2172,9 +2487,14 @@ declare module "FuseJS/Storage" {
  *
  *     var vibration = require('FuseJS/Vibration');
  *     vibration.vibrate(0.8);
+ *     // works on iOS using TapticEngine
+ *     vibration.vibrate('medium')
  */
 declare module "FuseJS/Vibration" {
-    function vibrate(seconds: number): void;
+    /**
+     * vibrationType (string) the type of vibration (works only on iOS using TapticEngine). Available vibrationType are : `soft`, `rigid`, `light`, `medium`, `heavy`, `success`, `warning`, `error`, `selection`
+     */
+    function vibrate(seconds: number | string): void;
 }
 
 /**
@@ -2185,9 +2505,9 @@ declare module "FuseJS/Vibration" {
  * ## Example
  *
  *     <JavaScript>
- *         var ImageTools = require("FuseJS/VideoTools");
+ *         var VideoTools = require("FuseJS/VideoTools");
  *
- *         ImageTools.copyVideoToCameraRoll(somePath);
+ *         VideoTools.copyVideoToCameraRoll(somePath);
  *     </JavaScript>
  */
 declare module "FuseJS/VideoTools" {
@@ -2195,6 +2515,56 @@ declare module "FuseJS/VideoTools" {
      * Copy a video to the camera roll.
      */
     function copyVideoToCameraRoll(videoPath: string): void;
+}
+
+/**
+ * This module provides access to whether or not the current OS setting for Dark Mode is enabled and or changed.
+ *
+ * ## Example
+ *
+ * ```xml
+ * <App>
+ *     <JavaScript>
+ *
+ *         var DarkMode = require("FuseJS/DarkMode");
+ *         var Observable = require("FuseJS/Observable");
+ *
+ *         var isDarkMode = Observable(false);
+ *
+ *         DarkMode.on("changed", function(val) {
+ *             console.log("DARKMODE CHANGED: " + val);
+ *             switch(val) {
+ *                 case 'light': isDarkMode.value = false;
+ *                     break;
+ *                 case 'dark': isDarkMode.value = true;
+ *                     break;
+ *             }
+ *         });
+ *
+ *         module.exports = {
+ *             isDarkMode
+ *         }
+ *
+ *     </JavaScript>
+ *     <StackPanel Alignment="Center">
+ *         <Text ux:Name="title" Value="Hello World!" />
+ *     </StackPanel>
+ *     <Rectangle ux:Name="bk" Layer="Background" Color="#FFF" />
+ *
+ *     <WhileTrue Value="{isDarkMode}">
+ *         <Change title.Value="Hello Dark World!" />
+ *         <Change title.Color="#FFF" />
+ *         <Change bk.Color="#000" />
+ *     </WhileTrue>
+ *     <WhileFalse Value="{isDarkMode}">
+ *         <Change title.Value="Hello World!" />
+ *         <Change title.Color="#000" />
+ *         <Change bk.Color="#FFF" />
+ *     </WhileFalse>
+ * </App>
+ * ```
+ */
+declare module "FuseJS/DarkMode" {
 }
 
 /**
@@ -2231,7 +2601,7 @@ declare module "FuseJS/Email" {
  * You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
  *
  * ## Example
- *
+ * ```javascript
  *     var InterApp = require("FuseJS/InterApp");
  *
  *     InterApp.on("receivedUri", function(uri) {
@@ -2239,10 +2609,130 @@ declare module "FuseJS/Email" {
  *     });
  *
  *     InterApp.launchUri("https://fuseopen.com/");
+ * ```
  *
  * In the above example we're using the @EventEmitter `on` method to listen to the `"receivedUri"` event.
  *
  * For the [receivedUri](api:fuse/reactive/fusejs/interapp/onreceiveduri_968f99a6.json) event to be triggered, you need register a custom URI scheme for your app, as shown [here](articles:basics/uno-projects#mobile-urischeme).
+ *
+ * ## Deep Links - Universal and App Links
+ *
+ * You can receive the `receivedUri` event, mentioned above, for associated web urls that have been tapped on in other apps.
+ *
+ * Apple: [https://developer.apple.com/ios/universal-links](https://developer.apple.com/ios/universal-links)
+ *
+ * Android: [https://developer.android.com/training/app-links](https://developer.android.com/training/app-links)
+ *
+ * ## Apple Universal Links
+ *
+ * 1. Add the associated domains in your `.unoproj`
+ * 2. Add the Apple App Site Association file to your website
+ *
+ * ### 1. Add associated domains to your .unoproj
+ *
+ * ```JSON
+ * {
+ *     "iOS": {
+ *         "SystemCapabilities": {
+ *             "AssociatedDomains": ["applinks:example.com", "applinks:sub.example.com"]
+ *         }
+ *     }
+ * }
+ * ```
+ *
+ * ### 2. Add the Apple App Site Association file to your website
+ *
+ * Apple-app-site-association file format
+ * ```JSON
+ * {
+ *     "applinks": {
+ *         "apps": [],
+ *         "details": [
+ *             {
+ *                 "appID": "<team identifier>.<bundle identifier>",
+ *                 "paths": [<paths>]
+ *             }
+ *         ]
+ *     }
+ * }
+ * ```
+ *
+ * Basic example, this allows all urls of the domain to be validated:
+ * ```JSON
+ * {
+ *     "applinks": {
+ *         "apps": [],
+ *         "details": [
+ *             {
+ *                 "appID": "1234567890.com.mypackage.myapp",
+ *                 "paths": ["*"]
+ *             }
+ *         ]
+ *     }
+ * }
+ * ```
+ *
+ * Place this file either in your site's `.well-known` directory, or directly in its root directory. If you use the `.well-known` directory, the file's URL should match the following format:
+ * ```
+ * https://<fully qualified domain>/.well-known/apple-app-site-association
+ * ```
+ * Tip: make sure you can access the file and view the JSON of the apple-app-site-association file from a browser.
+ *
+ * Full reference: [https://developer.apple.com/documentation/uikit/inter-process_communication/allowing_apps_and_websites_to_link_to_your_content/enabling_universal_links?language=objc](https://developer.apple.com/documentation/uikit/inter-process_communication/allowing_apps_and_websites_to_link_to_your_content/enabling_universal_links?language=objc)
+ *
+ * ## Android App Links
+ *
+ * 1. Add the associated domains in your `.unoproj`
+ * 2. Add the asset links file to your website
+ *
+ * ### 1. Add associated domains to your .unoproj
+ *
+ * ```JSON
+ * {
+ *     "Android": {
+ *         "AssociatedDomains": ["example.com", "sub.example.com"]
+ *     }
+ * }
+ * ```
+ *
+ * ### 2. Add the asset links file to your website
+ *
+ * Example:
+ * ```
+ * [{
+ *   "relation": ["delegate_permission/common.handle_all_urls"],
+ *     "target": {
+ *       "namespace": "android_app",
+ *       "package_name": "com.example.puppies.app",
+ *       "sha256_cert_fingerprints":
+ *       ["14:6D:E9:83:C5:73:06:50:D8:EE:B9:95:2F:34:FC:64:16:A0:83:42:E6:1D:BE:A8:8A:04:96:B2:3F:CF:44:E5"]
+ *     }
+ *   },
+ *   {
+ *     "relation": ["delegate_permission/common.handle_all_urls"],
+ *     "target": {
+ *       "namespace": "android_app",
+ *       "package_name": "com.example.monkeys.app",
+ *       "sha256_cert_fingerprints":
+ *       ["14:6D:E9:83:C5:73:06:50:D8:EE:B9:95:2F:34:FC:64:16:A0:83:42:E6:1D:BE:A8:8A:04:96:B2:3F:CF:44:E5"]
+ *     }
+ * }]
+ * ```
+ *
+ * Each group represents an app, you will likely need one for your development version and one for your release version of your app.
+ *
+ * To get the `sha256_cert_fingerprints`, use the following:
+ * ```
+ * keytool -list -v -keystore my-release-key.keystore
+ * ```
+ *
+ * To get the sha256 for the development version of exporting with fuse, use with `android` as the password:
+ * `keytool -list -v -keystore ~/.android/debug.keystore`
+ *
+ * Place this file in your site's `.well-known` directory. The file's URL should match the following format:
+ * ```
+ * https://domain.name/.well-known/assetlinks.json
+ * ```
  */
 declare module "FuseJS/InterApp" {
     type Event = "receivedUri";
@@ -2253,6 +2743,22 @@ declare module "FuseJS/InterApp" {
      * * `"receivedUri"` - Called when the app is launched via its own URI scheme.
      */
     function on(event: Event, callback: () => void): void;
+
+    /**
+     * Requests the system to launch an app.
+     *
+     * Note: for iOS you must use a uri
+     * for android, an applicationid like: https://play.google.com/store/apps/details?id=[application id]
+     *
+     * There are several common URI schemes that you can use on iOS:
+     *     http://<website address>
+     *     https://<website address>
+     *     tel:<phone number>
+     *     sms:<phone number>
+     *
+     * More information on supported URI schemes on iOS(https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html).
+     */
+    function launchApp(uri: string): void;
 
     /**
      * Requests the system to launch an app that handles the specified URI.
