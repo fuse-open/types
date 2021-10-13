@@ -43,7 +43,7 @@ declare module "FuseJS/Base64" {
      * Decodes the given base64 value to an UTF8 string representation
      *
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo � bar
+     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo ¸ bar
      */
     function decodeUtf8(value: string): string;
 
@@ -81,7 +81,7 @@ declare module "FuseJS/Base64" {
      * Encodes the given UTF8 value to a base64 string representation
      *
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Foo � bar")); //LOG: Rm9vIMKpIGJhcg==
+     *     console.log(Base64.encodeUtf8("Foo ¸ bar")); //LOG: Rm9vIMKpIGJhcg==
      */
     function encodeUtf8(value: string): string;
 }
@@ -257,9 +257,9 @@ declare module "FuseJS/Environment" {
  * randomly. Instead we guarentee the following flow through the states:
  *
  * Starting
- *    
- * Background ? Foreground ? Interactive
- *    
+ *    ↓
+ * Background ⟷ Foreground ⟷ Interactive
+ *    ↓
  * Terminating
  *
  * ## No `terminating` event
@@ -495,10 +495,10 @@ declare module "FuseJS/FileSystem" {
     /**
      * An object containing paths only exposed on Android devices:
      *
-     * * `externalCache` -  The directory acquired by calling `Context.getExternalCacheDir()`
-     * * `externalFiles` -  The directory acquired by calling `Context.getExternalFilesDir(null)`
-     * * `cache` -  The directory acquired by calling `Context.getCacheDir()`
-     * * `files` -  The directory acquired by calling `Context.getFilesDir()`
+     * * `externalCache` –  The directory acquired by calling `Context.getExternalCacheDir()`
+     * * `externalFiles` –  The directory acquired by calling `Context.getExternalFilesDir(null)`
+     * * `cache` –  The directory acquired by calling `Context.getCacheDir()`
+     * * `files` –  The directory acquired by calling `Context.getFilesDir()`
      */
     const androidPaths: AndroidPaths;
 
@@ -530,10 +530,10 @@ declare module "FuseJS/FileSystem" {
     /**
      * An object containing paths only exposed on iOS devices:
      *
-     * * `documents` -  Mapped to `NSDocumentDirectory`
-     * * `library` -  Mapped to `NSLibraryDirectory`
-     * * `caches` -  Mapped to `NSCachesDirectory`
-     * * `temp` -  Mapped to `NSTemporaryDirectory`
+     * * `documents` –  Mapped to `NSDocumentDirectory`
+     * * `library` –  Mapped to `NSLibraryDirectory`
+     * * `caches` –  Mapped to `NSCachesDirectory`
+     * * `temp` –  Mapped to `NSTemporaryDirectory`
      */
     const iosPaths: IosPaths;
 
@@ -2006,6 +2006,11 @@ declare module "FuseJS/Push" {
     function clearBadgeNumber(): void;
 
     /**
+     * Gets whether or not the user has enabled remote notifications
+     */
+    function isRegisteredForRemoteNotifications(): boolean;
+
+    /**
      * Registers the app with APNS. Only neccesary if APNS.RegisterOnLaunch was
      * set to false in the unoproj file.
      */
@@ -2500,7 +2505,7 @@ declare module "FuseJS/Vibration" {
 /**
  * Utility methods for video files manipulation. Currently only supports moving a video file to the camera roll.
  *
- * > To use this module, add `Fuse.CameraView` to your package references in your `.unoproj`.
+ * > To use this module, add `Fuse.Controls.CameraView` to your package references in your `.unoproj`.
  *
  * ## Example
  *
@@ -2581,11 +2586,11 @@ declare module "FuseJS/Email" {
      *
      * compose accepts the following arguments:
      *
-     * to - The email address(es) of the recipient
-     * cc - The email address(es) of whom to send a carbon copy
-     * bcc - The email address(es) of whom to send a blind carbon copy
-     * subject - The subject of the email
-     * message - The body text of the email
+     * to – The email address(es) of the recipient
+     * cc – The email address(es) of whom to send a carbon copy
+     * bcc – The email address(es) of whom to send a blind carbon copy
+     * subject – The subject of the email
+     * message – The body text of the email
      *
      *     var email = require('FuseJS/Email');
      *     email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
@@ -2672,7 +2677,7 @@ declare module "FuseJS/Email" {
  * }
  * ```
  *
- * Place this file either in your site's `.well-known` directory, or directly in its root directory. If you use the `.well-known` directory, the file's URL should match the following format:
+ * Place this file either in your site’s `.well-known` directory, or directly in its root directory. If you use the `.well-known` directory, the file’s URL should match the following format:
  * ```
  * https://<fully qualified domain>/.well-known/apple-app-site-association
  * ```
@@ -2729,7 +2734,7 @@ declare module "FuseJS/Email" {
  * To get the sha256 for the development version of exporting with fuse, use with `android` as the password:
  * `keytool -list -v -keystore ~/.android/debug.keystore`
  *
- * Place this file in your site's `.well-known` directory. The file's URL should match the following format:
+ * Place this file in your site’s `.well-known` directory. The file’s URL should match the following format:
  * ```
  * https://domain.name/.well-known/assetlinks.json
  * ```
