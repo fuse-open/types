@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 class ScriptEntity
 {
-    public string Name;
-    public string Documentation;
+    public string? Name;
+    public string? Documentation;
 }
 
 class ScriptMethod : ScriptEntity
@@ -48,9 +44,9 @@ class Program
 
     static void Parse(string value)
     {
-        var json = JsonConvert.DeserializeObject<JToken>(value);
+        var json = JsonConvert.DeserializeObject<JToken>(value)!;
         var comments = json.FindTokens("comment");
-        ScriptModule module = null;
+        ScriptModule? module = null;
 
         foreach (var comment in comments)
         {
@@ -63,7 +59,7 @@ class Program
 
             if (attributes.ContainsKey("scriptModule"))
             {
-                var scriptModule = attributes["scriptModule"];
+                var scriptModule = attributes["scriptModule"]!;
                 var name = scriptModule.ToString();
 
                 if (!name.Contains('/'))
@@ -75,17 +71,17 @@ class Program
 
             if (attributes.ContainsKey("scriptMethod"))
             {
-                var scriptMethod = attributes["scriptMethod"];
-                var result = new ScriptMethod {Name = scriptMethod["name"].ToString(), Documentation = full};
-                module.Methods.Add(result);
+                var scriptMethod = attributes["scriptMethod"]!;
+                var result = new ScriptMethod {Name = scriptMethod["name"]!.ToString(), Documentation = full};
+                module!.Methods.Add(result);
 
-                foreach (var parameter in scriptMethod["parameters"])
+                foreach (var parameter in scriptMethod["parameters"]!)
                     result.Parameters.Add(parameter.ToString());
             }
 
             if (attributes.ContainsKey("scriptProperty"))
             {
-                var scriptProperty = attributes["scriptProperty"];
+                var scriptProperty = attributes["scriptProperty"]!;
                 var result = new ScriptProperty {Name = scriptProperty.ToString(), Documentation = full};
 
                 // Extract type and docs
@@ -99,23 +95,23 @@ class Program
                 }
 
                 // Skip duplicates
-                if (module.Properties.Any(p => p.Name == result.Name))
+                if (module!.Properties.Any(p => p.Name == result.Name))
                     continue;
 
-                module.Properties.Add(result);
+                module!.Properties.Add(result);
             }
 
             if (attributes.ContainsKey("scriptEvent"))
             {
-                var scriptEvent = attributes["scriptEvent"];
+                var scriptEvent = attributes["scriptEvent"]!;
                 var result = new ScriptEvent {Name = scriptEvent.ToString(), Documentation = brief};
-                module.Events.Add(result);
+                module!.Events.Add(result);
             }
         }
     }
 
     // Should follow https://github.com/Microsoft/tsdoc
-    static void WriteDocumentation(string comment, string indent = "")
+    static void WriteDocumentation(string? comment, string indent = "")
     {
         if (string.IsNullOrEmpty(comment))
             return;
