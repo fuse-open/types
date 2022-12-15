@@ -129,9 +129,9 @@ class Program
 
     static int Main(string[] args)
     {
-        if (args.Length < 1)
+        if (args.Length < 2)
         {
-            Console.Error.WriteLine("Usage: generator-typescript <path-to-api-docs>");
+            Console.Error.WriteLine("Usage: generator-typescript <path-to-api-docs> <path-to-ts-defs>");
             return 1;
         }
 
@@ -147,7 +147,19 @@ class Program
         // We want LF newlines in our output.
         Console.Out.NewLine = "\n";
 
+        // Sort modules according to existing definitions.
+        var tsd = new TsDefinitions(args[1]);
+        var sortedModules = new List<ScriptModule>();
+
+        foreach (var module in tsd.Modules)
+            if (Modules.TryGetValue(module, out ScriptModule? value))
+                sortedModules.Add(value);
+
         foreach (var module in Modules.Values)
+            if (!sortedModules.Contains(module))
+                sortedModules.Add(module);
+
+        foreach (var module in sortedModules)
         {
             WriteDocumentation(module.Documentation);
             Console.WriteLine($"declare module \"{module.Name}\" {{");
