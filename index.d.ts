@@ -4,60 +4,66 @@
  * This is useful when passing string to places where some characters are not allowed.
  *
  * This example demonstrates simple use of the `Base64` module. The code prints the input string, and the computed Base64 string.
- *
+ * ```js
  *     var Base64 = require("FuseJS/Base64");
  *     var string = "Hello, world!";
  *     console.log(string); //LOG: Hello, world!
  *     console.log(Base64.encodeAscii(string)); //LOG: SGVsbG8sIHdvcmxkIQ==
+ * ```
  */
 declare module "FuseJS/Base64" {
     /**
      * Decodes the given base64 value to an ASCII string representation
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
      *     console.log(Base64.decodeAscii("SGVsbG8sIHdvcmxkIQ==")); //LOG: Hello, world!
+     * ```
      */
     function decodeAscii(value: string): string;
 
     /**
      * Decodes the given base64 string to an ArrayBuffer.
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
      *     var buf = Base64.decodeBuffer("NxMAAA==");
      *     var view = new Int32Array(data);
      *     // Should print 0x1337
      *     console.log("0x" + view[0].toString(16));
+     * ```
      */
     function decodeBuffer(base64String: string): ArrayBuffer;
 
     /**
      * Decodes the given base64 Latin-1 encoded bytes to a string.
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
      *     // Prints "hello world"
      *     console.log(Base64.decodeLatin1("aGVsbG8gd29ybGQ="));
+     * ```
      */
     function decodeLatin1(stringToDecode: string): string;
 
     /**
      * Decodes the given base64 value to an UTF8 string representation
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo ¸ bar
+     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo © bar
+     * ```
      */
     function decodeUtf8(value: string): string;
 
     /**
      * Encodes the given ASCII value to base64 string representation
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
      *     console.log(Base64.encodeAscii("Hello, world!")); //LOG: SGVsbG8sIHdvcmxkIQ==
+     * ```
      */
     function encodeAscii(value: string): string;
 
     /**
      * Encodes given array buffer to base64.
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
      *
      *     var data = new ArrayBuffer(4);
@@ -65,23 +71,26 @@ declare module "FuseJS/Base64" {
      *     view[0] = 0x1337;
      *
      *     console.log(Base64.encodeBuffer(data));
+     * ```
      */
     function encodeBuffer(arrayBuffer: ArrayBuffer): string;
 
     /**
      * Encodes the given string to a Latin-1 base64 string.
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
      *     // Prints "aGVsbG8gd29ybGQ="
      *     console.log(Base64.encodeLatin1("hello world"));
+     * ```
      */
     function encodeLatin1(stringToEncode: string): string;
 
     /**
      * Encodes the given UTF8 value to a base64 string representation
-     *
+     * ```js
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Foo ¸ bar")); //LOG: Rm9vIMKpIGJhcg==
+     *     console.log(Base64.encodeUtf8("Foo © bar")); //LOG: Rm9vIMKpIGJhcg==
+     * ```
      */
     function encodeUtf8(value: string): string;
 }
@@ -89,7 +98,7 @@ declare module "FuseJS/Base64" {
 /**
  * The bundle API allows you to read files that is bundled with the application, defined in the project file (using `<filename>:Bundle`).
  *
- * ```
+ * ```js
  * var Bundle = require("FuseJS/Bundle");
  * ```
  *
@@ -100,7 +109,7 @@ declare module "FuseJS/Bundle" {
      * Asynchronously reads a file from the application bundle and writes it to a destination on the device.
      * Use with `FuseJS/FileSystem` to determine destination paths. This is useful for extracting html and associated content for local use with WebView via `file://` protocol.
      *
-     * ```
+     * ```js
      * var Bundle = require("FuseJS/Bundle");
      * var FileSystem = require("FuseJS/FileSystem");
      * var Observable = require("FuseJS/Observable");
@@ -116,7 +125,7 @@ declare module "FuseJS/Bundle" {
     /**
      * Fetch a list of every file bundled with the application.
      *
-     * ```
+     * ```js
      * var Bundle = require("FuseJS/Bundle");
      *
      * Bundle.list().then(function(list) {
@@ -129,7 +138,7 @@ declare module "FuseJS/Bundle" {
     /**
      * Asynchronously reads a file from the application bundle
      *
-     * ```
+     * ```js
      * var Bundle = require("FuseJS/Bundle");
      *
      * Bundle.read("someData.json").then(function(contents) {
@@ -144,7 +153,7 @@ declare module "FuseJS/Bundle" {
     /**
      * Read a bundled file as an ArrayBuffer of bytes
      *
-     * ```
+     * ```js
      * var Observable = require("FuseJS/Observable");
      * var Bundle = require("FuseJS/Bundle");
      * var ImageTools = require("FuseJS/ImageTools");
@@ -160,7 +169,7 @@ declare module "FuseJS/Bundle" {
     /**
      * Synchronously reads a file from the application bundle
      *
-     * ```
+     * ```js
      * var Bundle = require("FuseJS/Bundle");
      *
      * var contents = Bundle.readSync("someData.json");
@@ -180,7 +189,7 @@ declare module "FuseJS/Bundle" {
  * ## Examples
  *
  * You can check which platform your app is running on using the following boolean properties:
- *
+ * ```js
  *     var Environment = require('FuseJS/Environment');
  *
  *     if(Environment.ios)        console.log("Running on iOS");
@@ -188,11 +197,12 @@ declare module "FuseJS/Bundle" {
  *     if(Environment.preview)    console.log("Running in preview mode");
  *     if(Environment.mobile)     console.log("Running on iOS or Android");
  *     if(Environment.desktop)    console.log("Running on desktop");
- *
+ * ```
  * You can also get the version of the current *mobile* OS as a
  * human-readable string using the `mobileOSVersion` property.
- *
+ * ```js
  *     console.log(Environment.mobileOSVersion);
+ * ```
  *
  * > *Note*
  * >
@@ -276,7 +286,7 @@ declare module "FuseJS/Environment" {
  * This module is an @EventEmitter, so the methods from @EventEmitter can be used to listen to events.
  *
  * ## Example
- *
+ * ```xml
  *     <JavaScript>
  *         var Lifecycle = require('FuseJS/Lifecycle');
  *
@@ -302,7 +312,7 @@ declare module "FuseJS/Environment" {
  *         <Text>Current lifecycle state:</Text>
  *         <Text Value="{lifecycleState}" />
  *     </StackPanel>
- *
+ * ```
  * In the above example we're using the @EventEmitter `on` method to listen to the different events.
  * We're also using the @EventEmitter `observe` method on the `"stateChanged"` event to get an @Observable containing the current state.
  */
@@ -313,12 +323,13 @@ declare module "FuseJS/Lifecycle" {
 
     /**
      * Will give you the current state as an integer
-     *
+     * ```js
      *     var Lifecycle = require("FuseJS/Lifecycle");
      *
      *     console.log(Lifecycle.state === Lifecycle.BACKGROUND);
      *     console.log(Lifecycle.state === Lifecycle.FOREGROUND);
      *     console.log(Lifecycle.state === Lifecycle.INTERACTIVE);
+     * ```
      */
     const state: number;
 
@@ -332,11 +343,21 @@ declare module "FuseJS/Lifecycle" {
      * Registers a function to be called when one of the following events occur.
      *
      * * `"enteringBackground"` - Triggered when the app is leaving the running state and is about to be suspended.
+     * ```js
+     *     var Lifecycle = require("FuseJS/Lifecycle");
      * * `"enteringForeground"` - Triggered when the app has left the suspended state and now is running.
      * You will receive this event when the app starts.
+     * ```js
+     *     var Lifecycle = require("FuseJS/Lifecycle");
      * * `"enteringInteractive"` - Triggered when the app is entering a state where it is fully focused and receiving events.
+     * ```js
+     *     var Lifecycle = require("FuseJS/Lifecycle");
      * * `"exitedInteractive"` - Triggered when the app is partially obscured or is no longer the focus (e.g. when you drag open the notification bar)
+     * ```js
+     *     var Lifecycle = require("FuseJS/Lifecycle");
      * * `"stateChanged"` - Triggered when the app's lifecycle state has changed.
+     * ```js
+     *     var Lifecycle = require("FuseJS/Lifecycle");
      */
     function on(event: Event, callback: () => void): void;
 }
@@ -353,7 +374,7 @@ declare module "FuseJS/Lifecycle" {
  * On Android using this API will request the CAMERA and WRITE_EXTERNAL_STORAGE permissions.
  *
  * ## Example
- *
+ * ```javascript
  *     var camera = require('FuseJS/Camera');
  *     camera.takePicture(640,480).then(function(image)
  *     {
@@ -361,6 +382,7 @@ declare module "FuseJS/Lifecycle" {
  *     }).catch(function(error) {
  *         //Something went wrong, see error for details
  *     });
+ * ```
  */
 declare module "FuseJS/Camera" {
     /**
@@ -400,7 +422,7 @@ declare module "FuseJS/Camera" {
  * ## Examples
  *
  * Requesting an image from the camera roll:
- *
+ * ```javascript
  *     var cameraRoll = require("FuseJS/CameraRoll");
  *
  *     cameraRoll.getImage()
@@ -409,9 +431,9 @@ declare module "FuseJS/Camera" {
  *         }, function(error) {
  *             // Will be called if the user aborted the selection or if an error occurred.
  *         });
- *
+ * ```
  * Taking a picture with the camera and adding it to the camera roll:
- *
+ * ```javascript
  *     var cameraRoll = require("FuseJS/CameraRoll");
  *     var camera = require("FuseJS/Camera");
  *
@@ -424,7 +446,7 @@ declare module "FuseJS/Camera" {
  *         }, function(error) {
  *             // Will called if an error occurred.
  *         });
- *
+ * ```
  * > **Note**: You also need to add a package reference to `Fuse.Camera` for the above example to work.
  */
 declare module "FuseJS/CameraRoll" {
@@ -457,9 +479,9 @@ declare module "FuseJS/CameraRoll" {
 
 /**
  * Provides an interface to the file system.
- *
+ * ```js
  *     var FileSystem = require("FuseJS/FileSystem");
- *
+ * ```
  * Using the asynchronous Promise based functions is recommended to keep your UI responsive,
  * although synchronous variants are also available if preferred.
  *
@@ -469,7 +491,7 @@ declare module "FuseJS/CameraRoll" {
  * ## Example
  *
  * This example writes a text to a file, and then reads it back:
- *
+ * ```js
  *     var FileSystem = require("FuseJS/FileSystem");
  *     var path = FileSystem.dataDirectory + "/" + "testfile.tmp";
  *
@@ -483,6 +505,7 @@ declare module "FuseJS/CameraRoll" {
  *         .catch(function(error) {
  *             console.log("Unable to read file due to error:" + error);
  *         });
+ * ```
  */
 declare module "FuseJS/FileSystem" {
     interface AndroidPaths {
@@ -541,7 +564,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously appends a string to a UTF-8 encoded file.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.appendTextToFile(FileSystem.dataDirectory + "/" + "myfile.txt", "Hello buddy")
@@ -550,6 +573,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log(error);
      *         });
+     * ```
      */
     function appendTextToFile(filename: string, contents: string): Promise<void>;
 
@@ -557,10 +581,11 @@ declare module "FuseJS/FileSystem" {
      * Synchronously appends a string to a UTF-8 encoded file.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.appendTextToFileSync("myfile.txt", "Hello buddy");
+     * ```
      */
     function appendTextToFileSync(filename: string, contents: string): void;
 
@@ -568,7 +593,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously copies a file or directory recursively from source to destination path
      *
      * ## Example
-     *
+     * ```js
      *     FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFile("to-be-copied.txt", "hello world")
@@ -578,6 +603,7 @@ declare module "FuseJS/FileSystem" {
      *         .catch(function(err) {
      *             console.log("Unable to copy file");
      *         });
+     * ```
      */
     function copy(source: string, destination: string): Promise<void>;
 
@@ -585,11 +611,12 @@ declare module "FuseJS/FileSystem" {
      * Synchronously copies a file or directory recursively from source to destination path
      *
      * ## Example
-     *
+     * ```js
      *     FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFileSync("to-be-copied.txt", "hello world");
      *     FileSystem.copySync("to-be-copied.txt", "destination-reached.txt");
+     * ```
      */
     function copySync(source: string, destination: string): void;
 
@@ -597,7 +624,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously creates a directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.createDirectory(FileSystem.dataDirectory + "/" + "new-directory")
@@ -606,6 +633,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log("Error trying to create directory.");
      *         });
+     * ```
      */
     function createDirectory(path: string): Promise<void>;
 
@@ -613,45 +641,19 @@ declare module "FuseJS/FileSystem" {
      * Synchronously creates a directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.createDirectory(FileSystem.dataDirectory + "/" + "new-directory");
+     * ```
      */
     function createDirectorySync(path: string): void;
-
-    /**
-     * Asynchronously delete a file.
-     *
-     * ## Example
-     *
-     *     var FileSystem = require("FuseJS/FileSystem");
-     *
-     *     FileSystem.remove("myfile.txt")
-     *         .then(function() {
-     *             console.log("Delete succeeded");
-     *         }, function(error) {
-     *             console.log("Unable to delete file");
-     *         });
-     */
-    function remove(path: string): Promise<void>;
-
-    /**
-     * Synchronously delete a file.
-     *
-     * ## Example
-     *
-     *     var FileSystem = require("FuseJS/FileSystem");
-     *
-     *     FileSystem.removeSync("myfile.txt");
-     */
-    function removeSync(path: string): void;
 
     /**
      * Asynchronously check if a file exists.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.exists("myfile.txt")
@@ -660,6 +662,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log("Unable to check if file exists");
      *         });
+     * ```
      */
     function exists(path: string): Promise<boolean>;
 
@@ -667,10 +670,11 @@ declare module "FuseJS/FileSystem" {
      * Synchronously check if a file exists.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     console.log(FileSystem.existsSync("myfile.txt") ? "It's there!" : "It's missing :/");
+     * ```
      */
     function existsSync(path: string): boolean;
 
@@ -685,12 +689,12 @@ declare module "FuseJS/FileSystem" {
      *
      * The returned object has the following properties:
      *
-     * * `exists` -  a boolean value stating whether the directory exists or not.
-     * * `lastWriteTime` -  A `Date` stating when directory was last changed
-     * * `lastAccessTime` -  A `Date` stating when directory was accessed
+     * * `exists` –  a boolean value stating whether the directory exists or not.
+     * * `lastWriteTime` –  A `Date` stating when directory was last changed
+     * * `lastAccessTime` –  A `Date` stating when directory was accessed
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.createDirectorySync("some-dir");
@@ -701,6 +705,7 @@ declare module "FuseJS/FileSystem" {
      *         .catch(function(error) {
      *             console.log("Failed to get directory info " + error);
      *         });
+     * ```
      */
     function getDirectoryInfo(path: string): Promise<DirectoryInfo>;
 
@@ -714,12 +719,13 @@ declare module "FuseJS/FileSystem" {
      * * `lastAccessTime` -  A `Date` stating when directory was accessed
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.createDirectorySync("some-dir");
      *     var dirInfo = FileSystem.getDirectoryInfoSync("some-dir");
      *     console.log("file was modified on " + dirInfo.lastWriteTime);
+     * ```
      */
     function getDirectoryInfoSync(path: string): DirectoryInfo;
 
@@ -735,13 +741,13 @@ declare module "FuseJS/FileSystem" {
      *
      * The returned object has the following properties:
      *
-     * * `size` -  size of file
-     * * `exists` -  a boolean value stating whether file exists
-     * * `lastWriteTime` -  A `Date` stating when file was last changed
-     * * `lastAccessTime` -  A `Date` stating when file was accessed
+     * * `size` –  size of file
+     * * `exists` –  a boolean value stating whether file exists
+     * * `lastWriteTime` –  A `Date` stating when file was last changed
+     * * `lastAccessTime` –  A `Date` stating when file was accessed
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFileSync("some-file.txt", "hello there");
@@ -752,6 +758,7 @@ declare module "FuseJS/FileSystem" {
      *         .catch(function(error) {
      *             "failed stat " + error
      *         });
+     * ```
      */
     function getFileInfo(path: string): Promise<FileInfo>;
 
@@ -760,17 +767,18 @@ declare module "FuseJS/FileSystem" {
      *
      * The returned object has the following properties:
      *
-     * * `exists` -  a boolean value stating whether file exists
-     * * `lastWriteTime` -  A `Date` stating when file was last changed
-     * * `lastAccessTime` -  A `Date` stating when file was accessed
+     * * `exists` –  a boolean value stating whether file exists
+     * * `lastWriteTime` –  A `Date` stating when file was last changed
+     * * `lastAccessTime` –  A `Date` stating when file was accessed
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFileSync("some-file.txt", "hello there");
      *     var fileInfo = FileSystem.getFileInfoSync("some-file.txt");
      *     console.log("file was modified on " + fileInfo.lastWriteTime);
+     * ```
      */
     function getFileInfoSync(path: string): FileInfo;
 
@@ -778,7 +786,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously list subdirectories in a directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.listDirectories(FileSystem.dataDirectory)
@@ -787,6 +795,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log("Unable to list subdirectories of directory: " + error);
      *         });
+     * ```
      */
     function listDirectories(path: string): Promise<string[]>;
 
@@ -794,11 +803,12 @@ declare module "FuseJS/FileSystem" {
      * Synchronously list subdirectories in a directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var directories = FileSystem.listDirectoriesSync(FileSystem.dataDirectory);
      *     console.log("There are " + directories.length + " subdirectories in directory");
+     * ```
      */
     function listDirectoriesSync(path: string): string[];
 
@@ -806,7 +816,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously lists both files and subdirectories in a directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.listEntries(FileSystem.dataDirectory)
@@ -815,6 +825,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log("Unable to list entries in directory due to error " + error);
      *         });
+     * ```
      */
     function listEntries(path: string): Promise<string[]>;
 
@@ -822,11 +833,12 @@ declare module "FuseJS/FileSystem" {
      * Synchronously lists both files and subdirectories in a directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var entries = FileSystem.listEntriesSync(FileSystem.dataDirectory);
      *     console.log("There are " + entries.length + " entries in directory");
+     * ```
      */
     function listEntriesSync(path: string): string[];
 
@@ -834,7 +846,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously list files in directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.listFiles(FileSystem.dataDirectory)
@@ -843,6 +855,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log("Unable to list files in directory due to error " + error);
      *         });
+     * ```
      */
     function listFiles(path: string): Promise<string[]>;
 
@@ -850,11 +863,12 @@ declare module "FuseJS/FileSystem" {
      * Synchronously list files in directory.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var files = FileSystem.listFilesSync(FileSystem.dataDirectory);
      *     console.log("There are " + files.length + " files in directory");
+     * ```
      */
     function listFilesSync(path: string): string[];
 
@@ -862,7 +876,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously moves a file or directory from source to destination path
      *
      * ## Example
-     *
+     * ```js
      *     FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFile("to-be-moved.txt", "hello world")
@@ -872,6 +886,7 @@ declare module "FuseJS/FileSystem" {
      *         .catch(function(err) {
      *             console.log("Unable to move file");
      *         });
+     * ```
      */
     function move(source: string, destination: string): Promise<void>;
 
@@ -879,11 +894,12 @@ declare module "FuseJS/FileSystem" {
      * Synchronously moves a file or directory from source to destination path
      *
      * ## Example
-     *
+     * ```js
      *     FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFileSync("to-be-moved.txt", "hello world");
      *     FileSystem.moveSync("to-be-moved.txt", "destination-reached.txt");
+     * ```
      */
     function moveSync(source: string, destination: string): Promise<void>;
 
@@ -891,7 +907,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously reads a file and returns a Promise of an ArrayBuffer with its contents.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.readBufferFromFile("myfile.txt")
@@ -900,6 +916,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log(error);
      *         });
+     * ```
      */
     function readBufferFromFile(filename: string): Promise<ArrayBuffer>;
 
@@ -907,10 +924,11 @@ declare module "FuseJS/FileSystem" {
      * Synchronously reads a file and returns an ArrayBuffer with its contents.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var data = FileSystem.readBufferFromFileSync("myfile.txt");
+     * ```
      */
     function readBufferFromFileSync(filename: string): ArrayBuffer;
 
@@ -918,7 +936,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously reads a file and returns a Promise of its contents.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.readTextFromFile("myfile.txt")
@@ -927,6 +945,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log(error);
      *         });
+     * ```
      */
     function readTextFromFile(filename: string): Promise<string>;
 
@@ -934,19 +953,49 @@ declare module "FuseJS/FileSystem" {
      * Synchronously reads a file and returns its contents as a string.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var content =  FileSystem.readTextFromFileSync(FileSystem.dataDirectory + "/" + "myfile.txt");
      *     console.log("The file contains " + content));
+     * ```
      */
     function readTextFromFileSync(filename: string): string;
+
+    /**
+     * Asynchronously delete a file.
+     *
+     * ## Example
+     * ```js
+     *     var FileSystem = require("FuseJS/FileSystem");
+     *
+     *     FileSystem.remove("myfile.txt")
+     *         .then(function() {
+     *             console.log("Delete succeeded");
+     *         }, function(error) {
+     *             console.log("Unable to delete file");
+     *         });
+     * ```
+     */
+    function remove(path: string): Promise<void>;
+
+    /**
+     * Synchronously delete a file.
+     *
+     * ## Example
+     * ```js
+     *     var FileSystem = require("FuseJS/FileSystem");
+     *
+     *     FileSystem.removeSync("myfile.txt");
+     * ```
+     */
+    function removeSync(path: string): void;
 
     /**
      * Asynchronously writes an `ArrayBuffer` to a file.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var data = new ArrayBuffer(4);
@@ -959,6 +1008,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log(error);
      *         });
+     * ```
      */
     function writeBufferToFile(filename: string, data: ArrayBuffer): Promise<void>;
 
@@ -966,7 +1016,7 @@ declare module "FuseJS/FileSystem" {
      * Synchronously writes an `ArrayBuffer` to a file.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     var data = new ArrayBuffer(4);
@@ -974,6 +1024,7 @@ declare module "FuseJS/FileSystem" {
      *     view[0] = 0x1337;
      *
      *     FileSystem.writeBufferToFileSync(FileSystem.dataDirectory + "/" + "myfile.txt", data);
+     * ```
      */
     function writeBufferToFileSync(filename: string, data: ArrayBuffer): void;
 
@@ -981,7 +1032,7 @@ declare module "FuseJS/FileSystem" {
      * Asynchronously writes a string to a UTF-8 encoded file.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFile(FileSystem.dataDirectory + "/" + "myfile.txt", "Hello buddy")
@@ -990,6 +1041,7 @@ declare module "FuseJS/FileSystem" {
      *         }, function(error) {
      *             console.log(error);
      *         });
+     * ```
      */
     function writeTextToFile(filename: string, text: string): Promise<void>;
 
@@ -997,10 +1049,11 @@ declare module "FuseJS/FileSystem" {
      * Synchronously writes a string to a UTF-8 encoded file.
      *
      * ## Example
-     *
+     * ```js
      *     var FileSystem = require("FuseJS/FileSystem");
      *
      *     FileSystem.writeTextToFileSync("myfile.txt", "Hello buddy");
+     * ```
      */
     function writeTextToFileSync(filename: string, text: string): void;
 }
@@ -1023,7 +1076,7 @@ declare module "FuseJS/FileSystem" {
  * ## Example
  *
  * The following example shows how the different modes of operation can be used:
- *
+ * ```xml
  *     <JavaScript>
  *         var Observable = require("FuseJS/Observable");
  *         var GeoLocation = require("FuseJS/GeoLocation");
@@ -1080,20 +1133,20 @@ declare module "FuseJS/FileSystem" {
  *         <Button Text="Start continuous listener" Clicked="{startContinuousListener}" />
  *         <Button Text="Stop continuous listener" Clicked="{stopContinuousListener}" />
  *     </StackPanel>
- *
+ * ```xml
  * In the above example we're using the @EventEmitter `observe` method to create an @Observable from the
  * `"changed"` event. We can also listen to changes by using the `on` method, as follows:
  *
  *     GeoLocation.on("changed", function(location) { ... })
  *
  * Locations returned by this module are JavaScript objects of the following form:
- *
+ * ```json
  *     {
  *         latitude: a number measured in decimal degrees,
  *         longitude: a number measured in decimal degrees,
  *         accuracy: a number measured in meters
  *     }
- *
+ * ```
  * To handle errors from GeoLocation we can listen to the `"error"` event, as follows:
  *
  *     GeoLocation.on("error", function(err) { ... })
@@ -1111,7 +1164,7 @@ declare module "FuseJS/GeoLocation" {
      * The last known location.
      *
      * The returned object is of the following form:
-     *
+     * ```json
      *     {
      *         altitude: altitude measured in meters,
      *         latitude: a number measured in decimal degrees,
@@ -1119,7 +1172,7 @@ declare module "FuseJS/GeoLocation" {
      *         accuracy: a number measured in meters,
      *         speed: speed measured in meters per second
      *     }
-     *
+     * ```
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
     const location: Location;
@@ -1132,16 +1185,16 @@ declare module "FuseJS/GeoLocation" {
      *
      * Setting this property to `1`, which is also the
      * default, for example as follows:
-     *
+     * ```json
      *     var GeoLocation = require("FuseJS/GeoLocation");
      *     GeoLocation.authorizationRequest = 1;
-     *
+     * ```
      * Means that the app should request permission from the
      * user to use location services while the app is in the
      * foreground. Setting it to `2`, as follows:
-     *
+     * ```json
      *     GeoLocation.authorizationRequest = 2;
-     *
+     * ```
      * Means that the app should request permission from the
      * user to use location services whenever the app is
      * running.
@@ -1171,7 +1224,7 @@ declare module "FuseJS/GeoLocation" {
      * that the promise should be rejected after.
      *
      * If successful, the promise is resolved with an object of the following form:
-     *
+     * ```json
      *     {
      *         altitude: altitude measured in meters,
      *         latitude: a number measured in decimal degrees,
@@ -1179,7 +1232,7 @@ declare module "FuseJS/GeoLocation" {
      *         accuracy: a number measured in meters,
      *         speed: speed measured in meters per second
      *     }
-     *
+     * ```
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
     function getLocation(timeout: number): Location;
@@ -1224,7 +1277,7 @@ declare module "FuseJS/GeoLocation" {
  * On Android using this API will request the WRITE_EXTERNAL_STORAGE and READ_EXTERNAL_STORAGE permissions.
  *
  * ## Example
- *
+ * ```xml
  *     <JavaScript>
  *         var ImageTools = require("FuseJS/ImageTools");
  *         var Observable = require("FuseJS/Observable");
@@ -1240,17 +1293,19 @@ declare module "FuseJS/GeoLocation" {
  *         module.exports = { test: new Date().toString(), image: imagePath };
  *     </JavaScript>
  *     <Image File="{image}" />
+ * ```
  */
 declare module "FuseJS/ImageTools" {
     /**
      * Encodes the given image as a base64 string.
      *
      * ## Example
-     *
+     * ```js
      *     // Here we assume that we have an existing `image` object
      *     var ImageTools = require("FuseJS/ImageTools");
      *     ImageTools.getBase64FromImage(image)
      *         .then(function(base64Image) { console.log("The base64 encoded image is \"" + base64Image + "\""); });
+     * ```
      */
     function getBase64FromImage(image: any): Promise<string>;
 
@@ -1258,11 +1313,12 @@ declare module "FuseJS/ImageTools" {
      * Retrieves the underlying image data for an image as an ArrayBuffer.
      *
      * ## Example
-     *
+     * ```js
      *     // Here image is expected to be an `Image` object
      *     var ImageTools = require("FuseJS/ImageTools");
      *     ImageTools.getBufferFromImage(image)
      *         .then(function(buf) { console.log("Image contains " + buf.byteLength + " bytes"); });
+     * ```
      */
     function getBufferFromImage(image: any): Promise<ArrayBuffer>;
 
@@ -1278,7 +1334,7 @@ declare module "FuseJS/ImageTools" {
      * * `performInPlace` - Boolean value determining whether the existing image will replaced
      *
      * ## Example
-     *
+     * ```js
      *     // Here we assume that we have an existing image variable `originalImage`
      *     var ImageTools = require("FuseJS/ImageTools");
      *
@@ -1289,6 +1345,7 @@ declare module "FuseJS/ImageTools" {
      *
      *     ImageTools.crop(originalImage, options)
      *         .then(function(newImage) { console.log("Path of cropped image is " + newImage.path); });
+     * ```
      */
     function crop(image: any, options: any): Promise<any>;
 
@@ -1296,13 +1353,14 @@ declare module "FuseJS/ImageTools" {
      * Takes base64 string encoded image data and returns a Promise of an Image.
      *
      * ## Example
-     *
+     * ```js
      *     // Here we assume that someBase64ImageString contains a base-64 encoded image
      *     var ImageTools = require("FuseJS/ImageTools");
      *     ImageTools.getImageFromBase64(someBase64ImageString);
      *         .then(function(image) {
      *             console.log("Scratch path of image is " + image.path);
      *         });
+     * ```
      */
     function getImageFromBase64(base64: string): Promise<any>;
 
@@ -1310,10 +1368,11 @@ declare module "FuseJS/ImageTools" {
      * Creates a new temporary image file from an ArrayBuffer of image data.
      *
      * ## Example
-     *
+     * ```js
      *     var ImageTools = require("FuseJS/ImageTools");
      *     ImageTools.getImageFromBuffer(imageData).
      *         then(function (image) { console.log("Scratch image path is: " + image.path); });
+     * ```
      */
     function getImageFromBuffer(imageData: ArrayBuffer): Promise<any>;
 
@@ -1331,7 +1390,7 @@ declare module "FuseJS/ImageTools" {
      * * `performInPlace` - Boolean value determining whether the existing image will replaced
      *
      * ## Example
-     *
+     * ```js
      *     // Here we assume that we have an existing image variable `originalImage`
      *     var ImageTools = require("FuseJS/ImageTools");
      *
@@ -1343,6 +1402,7 @@ declare module "FuseJS/ImageTools" {
      *
      *     ImageTools.resize(originalImage, options)
      *         .then(function(newImage) { console.log("Path of resized image is " + newImage.path); });
+     * ```
      */
     function resize(image: any, options: any): Promise<any>;
 }
@@ -1357,19 +1417,19 @@ declare module "FuseJS/ImageTools" {
  * ## Getting Set Up
  *
  * Include the Fuse local notification library by adding the following to your `.unoproj` file
- *
+ * ```json
  *     "Packages": [
  *         ...
  *         "Fuse.LocalNotifications",
  *         ...
  *     ],
- *
+ * ```
  * This is enough to start using this feature in your apps. Let's look at that now.
  *
  * ## App Example
  *
  * This is a full Fuse app that uses Local Notifications:
- *
+ * ```xml
  *     <App>
  *         <JavaScript>
  *             var LocalNotify = require("FuseJS/LocalNotifications");
@@ -1403,7 +1463,7 @@ declare module "FuseJS/ImageTools" {
  *             <BottomBarBackground DockPanel.Dock="Bottom" />
  *         </DockPanel>
  *     </App>
- *
+ * ```
  * Let's break down what is happening here.
  *
  * ## How it works
@@ -1411,11 +1471,11 @@ declare module "FuseJS/ImageTools" {
  * We will skip the `module.exports` and stuff inside the `DockPanel`, as that is better explained in other guides. Let's instead go through the JS.
  *
  * After `require`ing our module like normal, we set up a function which will deliver a notification 4 seconds in the future.
- *
+ * ```js
  *     function sendLater() {
  *         LocalNotify.later(4, "Finally!", "4 seconds is a long time", "hmm?", true);
  *     }
- *
+ * ```
  * The `later` function take the following parameters:
  *
  * - `secondsFromNow`: How long in seconds until the notification fires
@@ -1424,23 +1484,23 @@ declare module "FuseJS/ImageTools" {
  * - `payload`: a string which is not shown in the notification itself, but will be present in the callback.
  * - `sound`: a `bool` specifying whether or not the device should make the default notification sound when it is shown in the notification bar
  * - `badgeNumber`: An optional parameter that is only used on iOS, which puts a badge number against the apps icon. This is often used for showing the quantity of 'things' that need the user's attention. For example an email app could show the number of unread emails.
- *
+ * ```js
  *     function sendNow() {
  *         LocalNotify.now("Boom!", "Just like that", "payload", true);
  *     }
- *
+ * ```
  * The `now` function is almost identical to the `later` function, except that it doesnt have the `secondsFromNow` parameter.
  *
  * One last thing to note about both `now` and `later`, is that they will not deliver a notification to the user if the app is open. Instead, they will trigger the `receivedMessage` event silently.
  *
  * Finally, we set up the function that will be called whenever we get a notification, by using the @EventEmitter `on` method to register it.
- *
+ * ```js
  *     LocalNotify.on("receivedMessage", function(payload) {
  *         console.log("Received Local Notification: " + payload);
  *         LocalNotify.clearAllNotifications();
  *         LocalNotify.clearBadgeNumber();
  *     });
- *
+ * ```
  * This function is called whenever a notification is delivered while the app is open, or when the app is started from a notification the user has selected.
  *
  * The `payload` will be a string in JSON format containing the following keys:
@@ -1511,19 +1571,19 @@ declare module "FuseJS/LocalNotifications" {
  * ### Step 1.
  *
  * Include the Fuse push notification library by adding the following to your `.unoproj` file
- *
+ * ```json
  *     "Packages": [
  *         ...
  *         "Fuse.PushNotifications",
  *         ...
  *     ],
- *
+ * ```
  * ### Step 2. (Only for Android)
  *
  * Google notifications require a little extra info.
  *
  * Add the following to you `.unoproj`
- *
+ * ```json
  *     "Android": {
  *         ...
  *         "GooglePlay": {
@@ -1531,7 +1591,7 @@ declare module "FuseJS/LocalNotifications" {
  *         }
  *         ...
  *     },
- *
+ * ```
  * The `SenderID` is the sender ID from the [Firebase Console](https://console.firebase.google.com).
  * If you don't yet have a project set up please see the [Android setup](#android-setup) section later in this document.
  *
@@ -1557,19 +1617,19 @@ declare module "FuseJS/LocalNotifications" {
  * - When your app starts it registers with APNS. As all access is controlled through Apple's certificate system there is no extra info to provide (we will mention server side a bit later)
  *
  * If you wish to disable auto-registration you can place the following in your unoproj file:
- *
+ * ```json
  *     "iOS": {
  *         "PushNotifications": {
  *             "RegisterOnLaunch": false
  *         }
  *     },
- *
+ * ```
  * You must then register for push notifications by calling `register()` from JS. This option is useful as when the notifications are registered the OS may ask the user for permission to use push notifications and this may be undesirable on launch.
  *
  * ## Using the API from JavaScript
  *
  * Integrating with notifications from JavaScript is simple. Here is an example that just logs when the callbacks fire:
- *
+ * ```xml
  *     <JavaScript>
  *         var push = require("FuseJS/Push");
  *
@@ -1585,7 +1645,7 @@ declare module "FuseJS/LocalNotifications" {
  *             console.log("Recieved Push Notification: " + payload);
  *         });
  *     </JavaScript>
- *
+ * ```
  * Here we're using the @EventEmitter `on` method to register our functions with the different events.
  * In a real app we should send our `registration ID` to our server when `registrationSucceeded` is triggered.
  *
@@ -1608,25 +1668,25 @@ declare module "FuseJS/LocalNotifications" {
  * Apple and Google's APIs define how the data in the payload is used to populate the system notification, however we have normalized it a little.
  *
  * For iOS we'll just include an `aps` entry in the notification's JSON, like so:
- *
+ * ```json
  *     'aps': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
  *             'body': 'Hello from the server'
  *         }
  *     },
- *
+ * ```
  * And 'title' and 'body' will be used as the title and body of the system notification.
  *
  * For Android we can use exactly the same `'aps'` entry or the alternatively the following:
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
  *             'body': 'Hello from the server'
  *         }
  *     },
- *
+ * ```
  * The `notification` entry is the standard Google way of doing this but we felt that it wouldn't hurt to support the Apple way too.
  *
  * > The current implementation only guarantees the `title` and `body` entries will work. We also always use your app's icon as the notification icon. This is an area we will extend as Fuse matures. If you have specific requests, be sure to let us know!
@@ -1669,7 +1729,7 @@ declare module "FuseJS/LocalNotifications" {
  * We'll show you how to implement them here in fuse but read more about each feature [here](https://developer.android.com/guide/topics/ui/notifiers/notifications).
  *
  * #### Notification Sound - Value - default
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1677,9 +1737,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'sound': 'default'
  *         }
  *     },
+ * ```
  *
  * #### Notification Color - Values - #RRGGBB | #AARRGGBB
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1687,9 +1748,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'color': '#8811FF'
  *         }
  *     },
+ * ```
  *
  * #### Notification Priority - Values - high | low | max | min
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1697,9 +1759,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationPriority': 'high'
  *         }
  *     },
+ * ```
  *
  * #### Notification Category - Values - alarm | reminder | event | call | message | email | promo | recommendation | social | error | progress | service | status | system | transport
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1707,9 +1770,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationCategory': 'social'
  *         }
  *     },
+ * ```
  *
  * #### Notification Lockscreen Visibility - Values - public | secret | private
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1717,11 +1781,12 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationLockscreenVisibility': 'secret'
  *         }
  *     },
+ * ```
  *
  * #### Notification Channel
  *
  * Notification Channel and a Notification Channel Group:
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1733,9 +1798,9 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationChannelDescription': 'Video commentary once a week'
  *         }
  *     },
- *
+ * ```
  * Notification Channel Importance - Values - urgent | high | medium | low | none
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1749,9 +1814,10 @@ declare module "FuseJS/LocalNotifications" {
  *
  *         }
  *     },
+ * ```
  *
  * Notification Channel Lockscreen Visibility - Values - public | secret | private
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1759,9 +1825,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationChannelLockscreenVisibility': 'private'
  *         }
  *     },
+ * ```
  *
  * Notification Channel Light Color - Values - #RRGGBB
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1769,9 +1836,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationChannelLightColor': '#1188FF'
  *         }
  *     },
+ * ```
  *
  * Notification Channel Sound - Values - true | false
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1779,9 +1847,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationChannelIsSoundOn': 'true'
  *         }
  *     },
+ * ```
  *
  * Notification Channel Vibration - Values - true | false
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1789,9 +1858,10 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationChannelIsVibrationOn': 'true'
  *         }
  *     },
+ * ```
  *
  * Notification Channel Show Badge - Values - true | false
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1799,21 +1869,23 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationChannelIsShowBadgeOn': 'true'
  *         }
  *     },
+ * ```
  *
  * #### Notification Badge
  *
  * Notification Channel Badge Number
- *
- *     'notification': {
+ * ```json
+ *    'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
  *             'body': 'Hello from the server',
  *             'notificationBadgeNumber': '23'
  *         }
  *     },
+ * ```
  *
  * Notification Channel Badge Icon Type - Values - none | small | large
- *
+ * ```json
  *     'notification': {
  *         alert: {
  *             'title': 'Well would ya look at that!',
@@ -1821,11 +1893,12 @@ declare module "FuseJS/LocalNotifications" {
  *             'notificationBadgeIconType': 'small'
  *         }
  *     },
+ * ```
  *
  * #### Notification Uno Project Configurations
  *
  * The following notification settings can be set via the `.unoproj` settings:
- *
+ * ```json
  *     "Android": {
  *         ...
  *         "Notification": {
@@ -1843,6 +1916,7 @@ declare module "FuseJS/LocalNotifications" {
  *         }
  *         ...
  *     },
+ * ```
  *
  * Note: notification payload settings will always override the notification settings from `.unoproj`.
  * NB! Once a channel is created, you CANNOT change its properties later.
@@ -1863,13 +1937,13 @@ declare module "FuseJS/LocalNotifications" {
  * - Click the little cogwheel button at the top of the sidebar, and press "Project settings"
  * - Navigate to the "Cloud Messaging" tab
  * - Copy the "Sender ID" into your `.unoproj` like this:
- *
+ * ```json
  *         "Android": {
  *             "GooglePlay": {
  *                 "SenderID": "<Sender ID goes here>"
  *             }
  *         }
- *
+ * ```
  * ### Registering the Android app
  *
  * To enable Firebase Cloud Messaging, you need to register an Android app with your Firebase project.
@@ -1879,17 +1953,17 @@ declare module "FuseJS/LocalNotifications" {
  * - A dialog will pop up, prompting you for a package name (the other fields are optional).
  *     By default, this will be `com.apps.<yourappnameinlowercase>`.
  *     However, it is recommended to set your own:
- *
+ * ```json
  *         "Android": {
  *             "Package": "com.mycompany.myapp",
  *         }
- *
+ * ```
  * - After adding the Android app, you will be prompted to download a `google-services.json` file. Download and copy it to the root of your project.
  * - Add the following file to tell fuse to copy google-services.json to your android app folder:
  *
  * Android.uxl
  *
- * ```
+ * ```xml
  * <Extensions Backend="CPlusPlus" Condition="Android">
  *     <CopyFile Condition="Android" Name="google-services.json" TargetName="app/google-services.json" />
  * </Extensions>
@@ -1909,7 +1983,7 @@ declare module "FuseJS/LocalNotifications" {
  * Your server key can be found under the "Cloud Messaging" tab of the Project Settings page (where you obtained your Sender ID).
  *
  * Here some example Fuse code for sending your app a notification.
- *
+ * ```xml
  *     <JavaScript>
  *         var API_ACCESS_KEY = '----HARDCODED API KEY----';
  *         var regID = '----HARDCODED REG ID FROM THE APP YOU ARE SENDING TO----';
@@ -1940,7 +2014,7 @@ declare module "FuseJS/LocalNotifications" {
  *             });
  *         }
  *     </JavaScript>
- *
+ * ```
  * Whilst hardcoding the RegID is clearly not a good idea, it serves the purpose for this simple test.
  *
  * ## iOS setup
@@ -2044,7 +2118,7 @@ declare module "FuseJS/Push" {
  * ## Example
  *
  * The following example shows how to access accelerometer sensor:
- *
+ * ```xml
  *     <JavaScript>
  *         var Observable = require("FuseJS/Observable");
  *         var Sensor = require("FuseJS/Sensor");
@@ -2085,23 +2159,23 @@ declare module "FuseJS/Push" {
  *         <Button Text="Start continuous Accelerometer listener" Clicked="{startAccelerometerContinuousListener}" />
  *         <Button Text="Stop continuous Accelerometer listener" Clicked="{stopAccelerometerContinuousListener}" />
  *     </StackPanel>
- *
+ * ```
  * In the above example we're using `"changed"` event. Data returned by this module are JavaScript objects of the following form:
- *
+ * ```json
  *     {
  *         type: sensor type (in this case is Sensor.ACCELEROMETER),
  *         x: value of x axis,
  *         y: value of y axis,
  *         z: value of z axis,
  *     }
- *
+ * ```
  * ## Output
  *
  * Data returned on the "changed" event argument are JavaScript objects with always have `type` property.
  *  Value of `type` property determine what type sensor data it contains.
  *
  * Accelerometer, Gyroscope, Magnetometer, Gravity, User Acceleration and Rotation data all have same form of JavaScript object as desribed in the example below:
- *
+ * ```js
  *     var Sensor = require("FuseJS/Sensor")
  *     Sensor.on('changed', function(data) {
  *         switch (data.type) {
@@ -2143,9 +2217,9 @@ declare module "FuseJS/Push" {
  *         Sensor.stopListening(Sensor.USER_ACCELERATION);
  *         Sensor.stopListening(Sensor.ROTATION);
  *     }
- *
+ * ```
  * Step counter and pressure data has slightly different output JavaScript object as described in the example below:
- *
+ * ```js
  *     var Sensor = require("FuseJS/Sensor")
  *     Sensor.on('changed', function(data) {
  *         switch (data.type) {
@@ -2168,9 +2242,9 @@ declare module "FuseJS/Push" {
  *         Sensor.stopListening(Sensor.STEP_COUNTER);
  *         Sensor.stopListening(Sensor.PRESSURE);
  *     }
- *
+ * ```
  * Lastly, monitoring state changes of battery or network connectivity has output JavaScript object as follow:
- *
+ * ```js
  *     var Sensor = require("FuseJS/Sensor")
  *     Sensor.on('changed', function(data) {
  *         switch (data.type) {
@@ -2194,11 +2268,12 @@ declare module "FuseJS/Push" {
  *         Sensor.stopListening(Sensor.BATTERY);
  *         Sensor.stopListening(Sensor.CONNECTION_STATE);
  *     }
- *
+ * ```
  * To handle errors from Sensor we can listen to the `"error"` event, as follows:
- *
+ * ```js
  *     var Sensor = require("FuseJS/Sensor")
  *     Sensor.on("error", function(err) { ... })
+ * ```
  */
 declare module "FuseJS/Sensor" {
     const ACCELEROMETER: number;
@@ -2259,7 +2334,7 @@ declare module "FuseJS/Sensor" {
  * You need to add a reference to "Fuse.Share" in your project file to use this feature.
  *
  * ## Example
- *
+ * ```xml
  *     <JavaScript>
  *         var Share = require("FuseJS/Share")
  *         var Camera = require("FuseJS/Camera")
@@ -2273,13 +2348,13 @@ declare module "FuseJS/Sensor" {
  *             },
  *             shareText : function()
  *             {
- *                 Share.shareText("https://www.fusetools.com/", "The link to Fuse website");
+ *                 Share.shareText("https://fuseopen.com/", "The link to Fuse Open website");
  *             }
  *         }
  *     </JavaScript>
- *
+ * ```
  * ## iPad example
- *
+ * ```xml
  *     <Panel>
  *         <Button Text="Share" Clicked="{shareText}"/>
  *         <Panel ux:Name="ShareOrigin" Alignment="Center" Width="1" Height="1" />
@@ -2289,11 +2364,12 @@ declare module "FuseJS/Sensor" {
  *                 shareText : function()
  *                 {
  *                     // The iOS popover will use the position of ShareOrigin as its spawn origin
- *                     Share.shareText("https://www.fusetools.com/", "The link to Fuse website", ShareOrigin);
+ *                     Share.shareText("https://fuseopen.com/", "The link to Fuse Open website", ShareOrigin);
  *                 }
  *             }
  *         </JavaScript>
  *     </Panel>
+ * ```
  */
 declare module "FuseJS/Share" {
     /**
@@ -2309,15 +2385,46 @@ declare module "FuseJS/Share" {
 
 /**
  * The storage API allows you to read from and write to files in the application directory.
- *
+ * ```js
  *     var Storage = require("FuseJS/Storage");
- *
+ * ```
  * Check out the individual functions for documentation on how to use them.
  */
 declare module "FuseJS/Storage" {
     /**
+     * Synchrounously reads data from a file inside the application folder.
+     *
+     * ```js
+     *     var Storage = require("FuseJS/Storage");
+     *
+     *     var contents = Storage.readSync("myfile.txt");
+     *     console.log(contents);
+     * ```
+     *
+     * > Warning: This call will block until the operation is finished. Use read() if you are reading large amounts of data.
+     */
+    function readSync(filename: string): string;
+
+    /**
+     * Asynchronously reads a file and returns a promise of its contents.
+     *
+     * ```js
+     *     var Storage = require("FuseJS/Storage");
+     *
+     *     Storage.read("myfile.txt")
+     *         .then(function(contents) {
+     *             console.log(contents);
+     *         }, function(error) {
+     *             console.log(error);
+     *         });
+     * ```
+     */
+    function read(filename: string): Promise<string>;
+
+    /**
      * Synchrounously deletes a file inside the application folder.
      *
+     * ```js
      *     var Storage = require("FuseJS/Storage");
      *
      *     var success = Storage.removeSync("uselessFile.txt");
@@ -2327,40 +2434,16 @@ declare module "FuseJS/Storage" {
      *     else {
      *         console.log("An error occured!");
      *     }
+     * ```
      *
      * > Warning: This call will block until the operation is finished.
      */
     function removeSync(filename: string): boolean;
 
     /**
-     * Synchrounously reads data from a file inside the application folder.
-     *
-     *     var Storage = require("FuseJS/Storage");
-     *
-     *     var contents = Storage.readSync("myfile.txt");
-     *     console.log(contents);
-     *
-     * > Warning: This call will block until the operation is finished. Use read() if you are reading large amounts of data.
-     */
-    function readSync(filename: string): string;
-
-    /**
-     * Asynchronously reads a file and returns a promise of its contents.
-     *
-     *     var Storage = require("FuseJS/Storage");
-     *
-     *     Storage.read("myfile.txt")
-     *         .then(function(contents) {
-     *             console.log(contents);
-     *         }, function(error) {
-     *             console.log(error);
-     *         });
-     */
-    function read(filename: string): Promise<string>;
-
-    /**
      * Synchrounously writes data to a file inside the application folder.
      *
+     * ```js
      *     var Storage = require("FuseJS/Storage");
      *
      *     var success = Storage.writeSync("myfile.txt", "Hello from Fuse!");
@@ -2370,6 +2453,7 @@ declare module "FuseJS/Storage" {
      *     else {
      *         console.log("An error occured!");
      *     }
+     * ```
      *
      * > Warning: This call will block until the operation is finished. Use write() if you are writing large amounts of data.
      */
@@ -2378,6 +2462,7 @@ declare module "FuseJS/Storage" {
     /**
      * Asynchronously writes to a file.
      *
+     * ```js
      *     var Storage = require("FuseJS/Storage");
      *
      *     Storage.write("myfile.txt", "Hello from Fuse!")
@@ -2389,6 +2474,7 @@ declare module "FuseJS/Storage" {
      *                 console.log("Couldn't write to file.");
      *             }
      *         });
+     * ```
      */
     function write(filename: string, contents: string): Promise<boolean>;
 }
@@ -2400,7 +2486,7 @@ declare module "FuseJS/Storage" {
  * > `UserSettings` module is implemented atop NSUserDefaults on iOS and Shared Preferences on Android
  *
  * ## Example
- *
+ * ```xml
  *     <JavaScript>
  *         var userSettings = require("FuseJS/UserSettings")
  *
@@ -2427,6 +2513,7 @@ declare module "FuseJS/Storage" {
  *         var preferences = userSettings.getArray('preferences');
  *         var profile = userSettings.getObject('profile');
  *     </JavaScript>
+ * ```
  */
 declare module "FuseJS/UserSettings" {
     /**
@@ -2489,11 +2576,12 @@ declare module "FuseJS/UserSettings" {
  * ## Example
  *
  * The following code vibrates the device for 0.8 seconds.
- *
+ * ```js
  *     var vibration = require('FuseJS/Vibration');
  *     vibration.vibrate(0.8);
  *     // works on iOS using TapticEngine
- *     vibration.vibrate('medium')
+ *     vibration.vibrate('medium');
+ * ```
  */
 declare module "FuseJS/Vibration" {
     /**
@@ -2508,12 +2596,13 @@ declare module "FuseJS/Vibration" {
  * > To use this module, add `Fuse.Controls.CameraView` to your package references in your `.unoproj`.
  *
  * ## Example
- *
+ * ```xml
  *     <JavaScript>
  *         var VideoTools = require("FuseJS/VideoTools");
  *
  *         VideoTools.copyVideoToCameraRoll(somePath);
  *     </JavaScript>
+ * ```
  */
 declare module "FuseJS/VideoTools" {
     /**
@@ -2576,9 +2665,10 @@ declare module "FuseJS/DarkMode" {
  * Launches the default email app, and starts composing a message.
  *
  * You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
- *
+ * ```js
  *     var email = require('FuseJS/Email');
  *     email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
+ * ```
  */
 declare module "FuseJS/Email" {
     /**
@@ -2591,9 +2681,10 @@ declare module "FuseJS/Email" {
      * bcc – The email address(es) of whom to send a blind carbon copy
      * subject – The subject of the email
      * message – The body text of the email
-     *
+     * ```js
      *     var email = require('FuseJS/Email');
      *     email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
+     * ```
      */
     function compose(to: string, cc: string, bcc: string, subject: string, message: string): void;
 }
@@ -2703,7 +2794,7 @@ declare module "FuseJS/Email" {
  * ### 2. Add the asset links file to your website
  *
  * Example:
- * ```
+ * ```json
  * [{
  *   "relation": ["delegate_permission/common.handle_all_urls"],
  *     "target": {
@@ -2791,18 +2882,20 @@ declare module "FuseJS/InterApp" {
  * ## Example
  *
  * This code will launch a map centered at the nearest pizza restaurant.
- *
+ * ```js
  *     var Maps = require("FuseJS/Maps");
  *     Maps.searchNear(59.9117715, 10.7400957, "pizza restaurant");
+ * ```
  */
 declare module "FuseJS/Maps" {
     /**
      * Launches the map application, centered at the location given by `latitude` and `longitude`.
      *
      * ## Example
-     *
+     * ```js
      *     var Maps = require("FuseJS/Maps");
      *     Maps.openAt(59.9117715, 10.7400957);
+     * ```
      */
     function openAt(latitude: number, longitude: number): void;
 
@@ -2811,9 +2904,10 @@ declare module "FuseJS/Maps" {
      * using `query` as search criteria.
      *
      * ## Example
-     *
+     * ```js
      *     var Maps = require("FuseJS/Maps");
      *     Maps.searchNear(59.9117715, 10.7400957, "Fusetools");
+     * ```
      */
     function searchNear(latitude: number, longitude: number, query: string): void;
 
@@ -2821,9 +2915,10 @@ declare module "FuseJS/Maps" {
      * Launches the map application, centered at the location found using `query` as search criteria.
      *
      * ## Example
-     *
+     * ```js
      *     var Maps = require("FuseJS/Maps");
      *     Maps.searchNearby("Fusetools");
+     * ```
      */
     function searchNearby(query: string): void;
 }
@@ -2835,25 +2930,27 @@ declare module "FuseJS/Maps" {
  * You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
  *
  * ## Example
- *
+ * ```js
  *     var phone = require("FuseJS/Phone");
  *     phone.call("+47 123 45 678");
+ * ```
  */
 declare module "FuseJS/Phone" {
     /**
      * Launches your device's phone app with the specified number.
      *
      * ## Example
-     *
+     * ```js
      *     var phone = require("FuseJS/Phone");
      *     phone.call("+47 123 45 678");
+     * ```
      */
     function call(number: string): void;
 }
 
 /**
  * The Timer API lets you schedule functions to be executed after a given time.
- *
+ * ```js
  *     var Timer = require("FuseJS/Timer");
  *
  *     Timer.create(function() {
@@ -2863,13 +2960,14 @@ declare module "FuseJS/Phone" {
  *     Timer.create(function() {
  *         console.log("This will run every 10 seconds until forever");
  *     }, 10000, true);
+ * ```
  */
 declare module "FuseJS/Timer" {
     interface TimerId {}
 
     /**
      * Schedules `func` to be called after `time` milliseconds.
-     *
+     * ```js
      *     var Timer = require("FuseJS/Timer");
      *     Timer.create(function() {
      *         console.log("This will run once, after 3 seconds");
@@ -2878,13 +2976,14 @@ declare module "FuseJS/Timer" {
      *     Timer.create(function() {
      *         console.log("This will run every 10 seconds until forever");
      *     }, 10000, true);
+     * ```
      */
     function create(func: () => void, time: number, repeat: boolean): TimerId;
 
     /**
      * Deletes/unschedules a running timer.
      *
-     * ```
+     * ```js
      * var Timer = require("FuseJS/Timer");
      *
      * var callCount = 0;
@@ -2901,3 +3000,95 @@ declare module "FuseJS/Timer" {
      */
     function destroy(timerId: TimerId): void;
 }
+
+/**
+ * Offers simple alert and yes/no dialogs on mobile platforms.
+ */
+declare module "FuseJS/Alerts" {
+    /**
+     * Displays an alert box with a single button.
+     */
+    function alert(title: string, description: string, okbuttonlabel: string): void;
+
+    /**
+     * Displays an ok/cancel dialog.
+     */
+    function confirm(title: string, description: string, okbuttonlabel: string, cancelbuttonlabel: string): boolean;
+
+}
+
+/**
+ * This module allows you to shows menu items when pressing App Icon on the device home screen.
+ * This feature refer to the [home screen actions](https://developer.apple.com/design/human-interface-guidelines/ios/system-capabilities/home-screen-actions/) on iOS and [App Shortcut](https://developer.android.com/guide/topics/ui/shortcuts.html) on Android (introduced in Android 7.1 / API Level 25).
+ *
+ * You need to add a reference to `"Fuse.Shortcut"` in your project file to use this feature.
+ *
+ * This module is an @EventEmitter, so the methods from @EventEmitter can be used to listen to events.
+ *
+ * ## Usage
+ *
+ * The following example shows how create shortcut:
+ * ```xml
+ *         <App>
+ *             <JavaScript>
+ *
+ *                 var Observable = require("FuseJS/Observable")
+ *                 var selectedShortcut = new Observable("-")
+ *
+ *                 var shortcut = require("FuseJS/Shortcut");
+ *                 shortcut.registerShortcuts([
+ *                     {
+ *                         id: 'compose',
+ *                         title: "Compose",
+ *                         icon: "assets/images/compose.png"
+ *                     },
+ *                     {
+ *                         id: 'profile',
+ *                         title: "Profile",
+ *                         icon: "assets/images/user.png"
+ *                     },
+ *                     {
+ *                         id: 'book_store',
+ *                         title: "Book Store",
+ *                         icon: "assets/images/book.png"
+ *                     }
+ *                 ])
+ *
+ *                 shortcut.on('shortcutClicked', (type) => {
+ *                     selectedShortcut.value = type;
+ *                 })
+ *
+ *                 module.exports = {
+ *                     selectedShortcut
+ *                 }
+ *
+ *             </JavaScript>
+ *             <StackPanel Margin="20">
+ *                 <Text Value="Selected Shortcut: {selectedShortcut}" />
+ *             </StackPanel>
+ *         </App>
+ *
+ * Note that on the `registerShortcuts` method accepts array of json objects with the following properties:
+ * * id, id of the shortcut, and will be passed on the `shortcutClicked` callback when particular shortcut get clicked. This property is mandatory
+ * * title, to display menu title. This property is mandatory
+ * * subtitle, to display sub title (displayed below the title on iOS). This property is optional
+ * * icon, to display icon beside the menu title, value of the icon is a local image path (i.e asset path) not a url and must be registered as a Bundle. More info about Bundle [here.](/docs/assets/bundle). This property is optional
+ */
+declare module "FuseJS/Shortcut" {
+}
+
+/**
+ * The InAppBrowser API allows you to launch In App Browser
+ *
+ * You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
+ *
+ * ## Example
+ *
+ * ```javascript
+ *     var inAppBrowser = require("FuseJS/InAppBrowser");
+ *     inAppBrowser.openUrl("https://fuseopen.com");
+ * ```
+ */
+declare module "FuseJS/InAppBrowser" {
+}
+
