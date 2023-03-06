@@ -5,4 +5,4 @@ found in `api-docs/`, located in the [docs-repo](https://github.com/fuse-open/do
 
 Usage example:
 
-    dotnet run -- /path/to/api-docs > index.d.ts
+    dotnet run -- /path/to/api-docs /path/to/index.d.ts > index.d.ts

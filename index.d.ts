@@ -2505,7 +2505,7 @@ declare module "FuseJS/Storage" {
  *             'married': false
  *         });
  *
- *         var username = userSettings.getString('username');
+ *         var email = userSettings.getString('email');
  *         var password = userSettings.getString('password');
  *         var api_token = userSettings.getString('api_token');
  *         var logged = userSettings.getBoolean('logged');
@@ -2925,7 +2925,7 @@ declare module "FuseJS/Maps" {
 
 /**
  * The Phone API allows you to launch your device's built-in
- * phone app and make calls.
+ * phone app and make calls or send messages.
  *
  * You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
  *
@@ -2933,6 +2933,7 @@ declare module "FuseJS/Maps" {
  * ```js
  *     var phone = require("FuseJS/Phone");
  *     phone.call("+47 123 45 678");
+ *     phone.sms("+47 123 45 678", "Hi there");
  * ```
  */
 declare module "FuseJS/Phone" {
@@ -2946,6 +2947,18 @@ declare module "FuseJS/Phone" {
      * ```
      */
     function call(number: string): void;
+
+    /**
+     * Launches your device's messages app with the specified number.
+     *
+     * ## Example
+     * ```js
+     *     var phone = require("FuseJS/Phone");
+     *     phone.sms("+47 123 45 678", "Hi there");
+     * ```
+     */
+    function sms(number: string, body: string): void;
+
 }
 
 /**
