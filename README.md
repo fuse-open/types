@@ -10,17 +10,14 @@ TypeScript definitions for FuseJS modules. The source code is located in [Fuseli
 ## Install
 
 ```
-npm install @fuse-open/types
+npm install -D @fuse-open/types
 ```
 
 ### Related packages
 
 * [fuse-sdk](https://www.npmjs.com/package/fuse-sdk)
 * [fuselibs](https://www.npmjs.com/package/@fuse-open/fuselibs)
-
-## History
-
-This package was extracted from [fuselibs@1.14.0](https://github.com/fuse-open/fuselibs/tree/v1.14.0) (including Git history).
+* [tsconfig](https://www.npmjs.com/package/@fuse-open/tsconfig)
 
 ## Contributing
 
